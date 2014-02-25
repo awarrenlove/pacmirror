@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+
+import subprocess
+import argparse
+import configparser
+import shutil
+
+commandOptions = {
+	#Configuration name : [command option, include value]
+	'connectionTimeout' : ['--connection-timeout',True],
+	'cacheTimeout'      : ['--cache-timeout',True],
+	'sort'              : ['--sort',True],
+	'threads'           : ['--threads',True],
+	'verbose'           : ['--verbose',False],
+	'age'               : ['-a',True],
+	'country'           : ['-c',True],
+	'fastest'           : ['-f',True],
+	'include'           : ['-i',True],
+	'exclude'           : ['-x',True],
+	'latest'            : ['-l',True],
+	'number'            : ['-n',True],
+	'protocol'          : ['-p',True],
+}
+
+parser = argparse.ArgumentParser(description='Update the pacman mirror list using reflector. This must be run with privileges to overwrite the pacman mirrorlist.')
+parser.add_argument('-c', '--conf', help='the configuration file to use, default /etc/pacmirror/pacmirror.conf', default='/etc/pacmirror/pacmirror.conf')
+args = parser.parse_args()
+
+shutil.copy('/etc/pacman.d/mirrorlist', '/etc/pacman.d/mirrorlist.backup')
+
+config = configparser.ConfigParser()
+config.read(args.conf)
+
+reflectorCommand = ['reflector', '--save', '/etc/pacman.d/mirrorlist']
+
+for option in config['reflector']:
+	co = commandOptions[option]
+	reflectorCommand.append(co[0])
+	if (co[1]):
+		reflectorCommand.append(config['reflector'][option])
+
+subprocess.call(reflectorCommand)
+
