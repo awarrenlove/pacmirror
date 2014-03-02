@@ -1,14 +1,13 @@
-# Maintainer: Andrew Warren-Love <andrew@awarrenlove.com>
+# Maintainer: Andrew Warren-Love <andrew AT awarrenlove DOT com>
 pkgname=pacmirror-git
 _pkgname=pacmirror
-pkgver=2.b11536f
+pkgver=3.31f2cd1
 pkgrel=1
-epoch=
 pkgdesc="Update the pacman mirror list using reflector"
 arch=('any')
 url="https://github.com/awarrenlove/pacmirror"
 license=('MIT')
-depends=('python3')
+depends=('python3' 'reflector')
 provides=('pacmirror')
 source=('git://github.com/awarrenlove/pacmirror.git')
 md5sums=('SKIP')
