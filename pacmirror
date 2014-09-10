@@ -32,7 +32,11 @@ def update(config):
 	reflectorCommand = ['reflector', '--save', '/etc/pacman.d/mirrorlist']
 	for option in config['reflector']:
 		co = reflectorOptions[option]
-		if (co[1]):
+		if option == "country":
+			for country in config['reflector'][option].split(', '):
+				reflectorCommand.append(co[0])
+				reflectorCommand.append(country)
+		elif (co[1]):
 			reflectorCommand.append(co[0])
 			reflectorCommand.append(config['reflector'][option])
 		elif (config.getboolean('reflector',option)):
